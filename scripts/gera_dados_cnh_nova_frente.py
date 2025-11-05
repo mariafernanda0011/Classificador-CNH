@@ -29,14 +29,14 @@ def gerar_csv(qtd_itens, nome_arquivo="cnh_nova_fake.csv"):
 
         for _ in range(qtd_itens):
             # Nome completo
-            nome = fake.name()
+            nome = fake.name().upper()
 
             # Primeira habilitação (data)
             primeira_hab = fake.date_between(start_date='-30y', end_date='-18y').strftime("%d/%m/%Y")
 
             # Data, local e UF de nascimento (tudo junto)
             data_nasc = fake.date_of_birth(minimum_age=18, maximum_age=70).strftime("%d/%m/%Y")
-            cidade_nasc = fake.city()
+            cidade_nasc = fake.city().upper()
             uf_nasc = fake.estado_sigla()
             nascimento_completo = f"{data_nasc}, {cidade_nasc}, {uf_nasc}"
 
@@ -48,7 +48,7 @@ def gerar_csv(qtd_itens, nome_arquivo="cnh_nova_fake.csv"):
             rg = f"{random.randint(10000000, 99999999)}"
             orgao = "SSP"
             uf_emissor = uf_nasc
-            doc_completo = f"{rg} {orgao} {uf_emissor}"
+            doc_completo = f"{uf_emissor}{rg} {orgao} {uf_emissor}"
 
             # CPF
             cpf = fake.cpf()
@@ -63,8 +63,8 @@ def gerar_csv(qtd_itens, nome_arquivo="cnh_nova_fake.csv"):
             nacionalidade = "BRASILEIRO(A)"
 
             # Filiação separada: pai e mãe
-            filiacao_pai = fake.name_male()
-            filiacao_mae = fake.name_female()
+            filiacao_pai = fake.name_male().upper()
+            filiacao_mae = fake.name_female().upper()
 
             # Escrevendo todos os campos no CSV
             escritor.writerow([

@@ -3,12 +3,18 @@ import csv
 import json
 import os
 import sys
+from PIL import Image, ImageDraw, ImageFont
+import numpy as np 
 
 def gerar_imagens(quantidade_imagens, imagem_base, csv_arquivo, json_arquivo, pasta_saida):
-    tamanho_fonte = 0.3
+
+    tamanho_fonte = 10
     cor_padrao = (0, 0, 0) # preto
-    cor_vermelha = (0, 0, 255)
+    cor_vermelha = (255, 0, 0)
     
+    # Carregando a fonte
+    font = ImageFont.truetype("fonts/MinionPro-Regular.otf", tamanho_fonte)
+
     # Lê os dados do CSV
     dados_csv = []
     with open(csv_arquivo, newline='', encoding='utf-8') as f:
@@ -25,7 +31,12 @@ def gerar_imagens(quantidade_imagens, imagem_base, csv_arquivo, json_arquivo, pa
 
     # Cada linha do CSV gera uma imagem (limitado pela quantidade escolhida)
     for id_item, dado in enumerate(dados_csv[:quantidade_imagens], start=1):
+        # Carrega a imagem de exemplo/base
         imagem = cv2.imread(imagem_base)
+
+        # Converte de OpenCV para PIL (BGR para RGB)
+        imagem_pil = Image.fromarray(cv2.cvtColor(imagem, cv2.COLOR_BGR2RGB))
+        draw = ImageDraw.Draw(imagem_pil)
 
         # Para cada campo do CSV, desenha o texto conforme a posição
         for campo, posicao in posicoes.items():
@@ -37,9 +48,19 @@ def gerar_imagens(quantidade_imagens, imagem_base, csv_arquivo, json_arquivo, pa
                     cor = cor_vermelha
                 else:
                     cor = cor_padrao
+                
+                # Desenhando as informações com Pil
+                draw.text(
+                    tuple(posicao),
+                    texto,
+                    font=font,
+                    fill=cor, # PIL usa RGB; OpenCV usa BGR
+                    stroke_width=0.2,
+                    stroke_fill=cor
+                )
 
-                cv2.putText(imagem, texto, tuple(posicao),
-                            cv2.FONT_HERSHEY_SIMPLEX, tamanho_fonte, cor, 1, cv2.LINE_AA)
+        # Converte PIL para OpenCV (RGB para BGR)
+        imagem = cv2.cvtColor(np.array(imagem_pil), cv2.COLOR_RGB2BGR)
 
         # Salva a imagem
         nome_saida = os.path.join(pasta_saida, f"imagem_{id_item}.jpg")

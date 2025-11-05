@@ -52,6 +52,6 @@ Para instalar o colorgram no vsCode:   pip install colorgram.py ou pip install c
 OBSERVAÇÕES:
 
 - A biblioteca cv2 não sabe lidar com caracteres especiais, isso gera imagens com "erros" de escrita.
-(Aparece uma "?" no lugar de letras como ç, ã, ê e etc.)
+(Aparece uma "?" no lugar de letras como ç, ã, ê e etc.) >>[RESOLVIDO]<<
 
 
