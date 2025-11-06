@@ -3,12 +3,12 @@ import random
 from faker import Faker
 from datetime import datetime, timedelta
 
-def gerar_csv(qtd_itens, nome_arquivo="cnh_nova_fake.csv"):
+def gerar_csv(qtd_itens, nome_arquivo_saida="cnh_nova_fake_frente.csv"):
     # Definindo o idioma
     fake = Faker('pt_BR')
     categorias = ["ACC", "A", "A1", "B", "B1", "C", "C1", "D", "D1", "BE", "CE", "C1E", "DE", "D1E"]
 
-    with open(nome_arquivo, mode='w', newline='', encoding='utf-8') as arquivo:
+    with open(nome_arquivo_saida, mode='w', newline='', encoding='utf-8') as arquivo:
         escritor = csv.writer(arquivo)
 
         # Cabeçalho com labels da CNH nova (dados combinados já tratados)
@@ -82,7 +82,7 @@ def gerar_csv(qtd_itens, nome_arquivo="cnh_nova_fake.csv"):
                 filiacao_mae
             ])
 
-    print(f"{qtd_itens} CNHs fake salvas em '{nome_arquivo}'")
+    print(f"{qtd_itens} CNHs fake salvas em '{nome_arquivo_saida}'")
 
 
 if __name__ == "__main__":
