@@ -3,7 +3,7 @@ import random
 from faker import Faker
 from datetime import datetime, timedelta
 
-def gerar_csv(qtd_itens, nome_arquivo_saida="cnh_nova_fake_frente.csv"):
+def gerar_csv(qtd_itens, nome_arquivo_saida="csv/cnh_nova_dados_frente.csv"):
     # Definindo o idioma
     fake = Faker('pt_BR')
     categorias = ["ACC", "A", "A1", "B", "B1", "C", "C1", "D", "D1", "BE", "CE", "C1E", "DE", "D1E"]

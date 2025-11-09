@@ -1,0 +1,16 @@
+{
+    "nome_completo": [156, 234],
+    "primeira_hab": [478, 234],
+    "data_local_uf": [298, 264],
+    "data_emissao": [300, 294],
+    "validade": [391, 294],
+    "identidade_emissor_uf": [299, 324],
+    "cpf": [299, 355],
+    "num_registro": [400, 355],
+    "cat_hab": [496, 355],
+    "nacionalidade": [299, 384],
+    "filiacao_pai": [299, 414],
+    "filiacao_mae": [299, 446],
+    "inf_completa": [150, 791],
+    "uf_extenso": [242, 834]
+}
