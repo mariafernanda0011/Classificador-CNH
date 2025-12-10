@@ -83,7 +83,7 @@ def main():
     # === Frente ===
     gerar_imagens(
         quantidade_imagens,
-        imagem_base="imagens/cnh_digital/CNH_frente/imagem_exemplo2.jpg",
+        imagem_base="imagens/cnh_fisica/CNH_frente/imagem_exemplo2.jpg",
         csv_arquivo="csv/cnh_nova_dados_frente.csv",
         json_arquivo="json/posicoes_cnh_fisica_frente.json",
         pasta_saida="imagens/cnh_fisica/CNH_frente"
@@ -92,7 +92,7 @@ def main():
     # === Verso ===
     gerar_imagens(
         quantidade_imagens,
-        imagem_base="imagens/cnh_digital/CNH_verso/imagem_exemplo3.jpg",
+        imagem_base="imagens/cnh_fisica/CNH_verso/imagem_exemplo3.jpg",
         csv_arquivo="csv/cnh_nova_dados_verso.csv",
         json_arquivo="json/posicoes_cnh_fisica_verso.json",
         pasta_saida="imagens/cnh_fisica/CNH_verso"
@@ -101,7 +101,7 @@ def main():
     # === Aberta ===
     gerar_imagens(
         quantidade_imagens,
-        imagem_base="imagens/cnh_digital/CNH_aberta/imagem_exemplo.jpg",
+        imagem_base="imagens/cnh_fisica/CNH_aberta/imagem_exemplo.jpg",
         csv_arquivo="csv/cnh_nova_dados_aberta.csv",
         json_arquivo="json/posicoes_cnh_fisica_aberta.json",
         pasta_saida="imagens/cnh_fisica/CNH_aberta"
