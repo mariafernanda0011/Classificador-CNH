@@ -8,7 +8,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 from qr_feature_extractor import detectar_qr
 from color_feature_extractor import get_colors_hsv, generate_color_features
 
-print("🔥 O SCRIPT FOI INICIADO!")
+print("O SCRIPT FOI INICIADO!")
 
 def carregar_imagens(pasta_base):
     """
@@ -122,34 +122,28 @@ def main():
 
 
         for caminho_imagem in lista_imagens:
-            print(f"\n🔵 Processando: {caminho_imagem}")
-            print("   Lendo imagem...")
+            print(f"\n Processando: {caminho_imagem}")
+            print(" Lendo imagem...")
             
             # Features OCR
             print("Extraindo texto (OCR)...")
             resultado = processar_imagem(caminho_imagem)
             
             # Features QR code
-            print("   Detectando QR...")
+            print("Detectando QR...")
             qr_feats = detectar_qr(caminho_imagem)
             resultado["qr_detectado"] = qr_feats
-            print("   QR OK")
+            print("QR OK")
 
             # Features de cor
-            print("   Extraindo cores HSV...")
+            print("Extraindo cores HSV...")
             color_feats = generate_color_features(get_colors_hsv(caminho_imagem, num_colors=3))
             resultado.update(color_feats)
-            print("   Cores OK")
+            print("Cores OK")
 
             # Adiciona categoria e subpasta
             resultado["categoria"] = categoria
             resultado["subpasta"] = subpasta
-
-            bag = obter_bag_palavras()
-            texto = resultado["texto_extraido"].lower()
-
-            for palavra in bag: 
-                resultado[f"bag_{palavra}"] = 1 if palavra.lower() in texto else 0
 
             resultados.append(resultado)
 
@@ -157,9 +151,11 @@ def main():
     df = pd.DataFrame(resultados)
 
     # Gera bag-of-words com a SUA função
+    print("Gerando features Bag of Words...")
     df = gerar_features_bag_palavras(df, obter_bag_palavras())
-
-    print("   OK, salvando dados...")
+    print("Bag of Words OK")
+    
+    print(" ===== OK, salvando dados...")
     nome_csv = f"features_{categoria}_{subpasta}.csv"
     gerar_csv(df.to_dict(orient="records"), nome_csv)
 
