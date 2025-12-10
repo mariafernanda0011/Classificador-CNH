@@ -1,41 +1,46 @@
-import colorgram
-import argparse
-import sys
-from PIL import Image, ImageDraw, ImageFont
+import cv2
+import numpy as np
+
+def get_colors_hsv(image_path, num_colors=3):
+    img = cv2.imread(image_path)
+    if img is None:
+        print(f"Erro ao ler imagem: {image_path}")
+        return []
+
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    pixels = img.reshape((-1, 3))
+    pixels = np.float32(pixels)
+
+    # critério de parada
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 20, 0.1)
+
+    _, labels, centers = cv2.kmeans(
+        data=pixels,
+        K=num_colors,
+        bestLabels=None,
+        criteria=criteria,
+        attempts=10,
+        flags=cv2.KMEANS_RANDOM_CENTERS
+    )
+
+    hsv_list = []
+    for center in centers:
+        rgb = np.uint8([[center]])
+        hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)[0][0]
+
+        hsv_list.append({
+            "h": int(hsv[0]),
+            "s": int(hsv[1]),
+            "v": int(hsv[2]),
+        })
+
+    return hsv_list
 
 
-def get_colors(image_file, numcolors=6):
-    # Extract dominant colors from an image.
-    colors = colorgram.extract(image_file, numcolors)
-    return colors
-
-def save_palette(colors, swatchsize=100, outfile="palette.png"):
-    num_colors = len(colors)
-    image_palette = Image.new('RGB', (swatchsize * num_colors, swatchsize))
-    print(image_palette)
-
-    draw = ImageDraw.Draw(image_palette)
-    font = ImageFont.truetype('font/lmmonoproplt10-bold.otf', 15)
-    posx = 0
-    count_color = 0
-    for color in colors:
-        txt = str(color.rgb.r) + "," + str(color.rgb.g) + "," + str(
-            color.rgb.b)
-        print(
-            f"Color {count_color}: ({color.rgb.r},{color.rgb.g},{color.rgb.b})")
-        
-        draw.rectangle([posx, 0, posx + swatchsize, swatchsize],
-                       fill=(color.rgb.r, color.rgb.g, color.rgb.b))
-    
-    draw.text((posx + 10, 0, posx + swatchsize), txt, font=font)
-    posx = posx + swatchsize
-    count_color = count_color + 1
-    image_palette.show()
-    image_palette.save(outfile, "PNG")
-
-
-if __name__ == '__main__':
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-    colors = get_colors(input_file)
-    save_palette(colors, outfile=output_file)
+def generate_color_features(hsv_list):
+    features = {}
+    for i, hsv in enumerate(hsv_list):
+        features[f"color{i+1}_h"] = hsv["h"]
+        features[f"color{i+1}_s"] = hsv["s"]
+        features[f"color{i+1}_v"] = hsv["v"]
+    return features

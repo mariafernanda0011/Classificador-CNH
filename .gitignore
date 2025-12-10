@@ -1,0 +1,16 @@
+# Ignore pastas de imagens
+/imagens/
+/imagens_transformadas/
+
+# Ignore arquivos de imagem
+*.jpg
+*.jpeg
+*.png
+
+# Ignore venv
+/venv/
+
+# Cache
+__pycache__/
+*.log
+.DS_Store

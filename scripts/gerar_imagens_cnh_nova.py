@@ -6,17 +6,18 @@ import sys
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np 
 
-def gerar_imagens(quantidade_imagens, imagem_base, csv_arquivo, json_arquivo, pasta_saida):
+def gerar_imagens(quantidade_imagens, imagem_base, csv_arquivo, json_arquivo, pasta_saida, tipo_cnh):
 
-    tamanho_fonte = 10
-    tamanho_fonte_maior = 16
+    tamanho_fonte = 10    
+    tamanho_fonte_medio = 16
+    tamanho_fonte_maior = 23 # CNH física 
     cor_padrao = (0, 0, 0) # preto
     cor_vermelha = (255, 0, 0)
     
-    # Carregando a fonte
+    # Carregando as fontes
     font = ImageFont.truetype("font/MinionPro-Regular.otf", tamanho_fonte)
+    font_medio = ImageFont.truetype("font/MinionPro-Regular.otf", tamanho_fonte_medio)
     font_grande = ImageFont.truetype("font/MinionPro-Regular.otf", tamanho_fonte_maior)
-
 
     # Lê os dados do CSV
     dados_csv = []
@@ -52,12 +53,16 @@ def gerar_imagens(quantidade_imagens, imagem_base, csv_arquivo, json_arquivo, pa
                 else:
                     cor = cor_padrao
 
-                # Escolhe a fonte
-                if campo in ["uf_extenso"]:  
+                # Escolhe a fonte conforme o tipo da CNH
+                if tipo_cnh == "fisica":
                     fonte_usada = font_grande
-                else:
-                    fonte_usada = font
-                
+
+                elif tipo_cnh == "digital":
+                    if campo in ["uf_extenso"]:
+                        fonte_usada = font_medio
+                    else:
+                        fonte_usada = font
+
                 # Desenhando as informações com a biblioteca Pil
                 draw.text(
                     tuple(posicao),
@@ -78,15 +83,17 @@ def gerar_imagens(quantidade_imagens, imagem_base, csv_arquivo, json_arquivo, pa
     print(f"{quantidade_imagens} imagens geradas na pasta '{pasta_saida}'")
 
 def main():
-    quantidade_imagens = 5
+    quantidade_imagens = 288
 
+    # >>>>> CNH Nova Digital <<<<<
     # === Frente ===
     gerar_imagens(
         quantidade_imagens,
-        imagem_base="imagens/cnh_digital/CNH_frente/imagem_exemplo.jpg",
+        imagem_base="imagens/cnh_digital/CNH_frente/imagem_exemplo1.jpg",
         csv_arquivo="csv/cnh_nova_dados_frente.csv",
         json_arquivo="json/posicoes_cnh_nova_frente.json",
-        pasta_saida="imagens/cnh_digital/CNH_frente"
+        pasta_saida="imagens/cnh_digital/CNH_frente", 
+        tipo_cnh="digital"
     )
 
     # === Verso ===
@@ -95,7 +102,8 @@ def main():
         imagem_base="imagens/cnh_digital/CNH_verso/imagem_exemplo2.jpg",
         csv_arquivo="csv/cnh_nova_dados_verso.csv",
         json_arquivo="json/posicoes_cnh_nova_verso.json",
-        pasta_saida="imagens/cnh_digital/CNH_verso"
+        pasta_saida="imagens/cnh_digital/CNH_verso",
+        tipo_cnh="digital"
     )
 
     # === Aberta ===
@@ -104,7 +112,40 @@ def main():
         imagem_base="imagens/cnh_digital/CNH_aberta/imagem_exemplo3.jpg",
         csv_arquivo="csv/cnh_nova_dados_aberta.csv",
         json_arquivo="json/posicoes_cnh_nova_aberta.json",
-        pasta_saida="imagens/cnh_digital/CNH_aberta"
+        pasta_saida="imagens/cnh_digital/CNH_aberta",
+        tipo_cnh="digital"
+    )
+    
+
+    # >>>>> CNH Nova Física <<<<<
+    # === Frente ===
+    gerar_imagens(
+        quantidade_imagens,
+        imagem_base="imagens/cnh_fisica/CNH_frente/imagem_exemplo1.jpg",
+        csv_arquivo="csv/cnh_nova_dados_frente.csv",
+        json_arquivo="json/posicoes_cnh_fisica_frente.json",
+        pasta_saida="imagens/cnh_fisica/CNH_frente",
+        tipo_cnh="fisica"
+    )
+
+    # === Verso ===
+    gerar_imagens(
+        quantidade_imagens,
+        imagem_base="imagens/cnh_fisica/CNH_verso/imagem_exemplo2.jpg",
+        csv_arquivo="csv/cnh_nova_dados_verso.csv",
+        json_arquivo="json/posicoes_cnh_fisica_verso.json",
+        pasta_saida="imagens/cnh_fisica/CNH_verso",
+        tipo_cnh="fisica"
+    )
+
+    # === Aberta ===
+    gerar_imagens(
+        quantidade_imagens,
+        imagem_base="imagens/cnh_fisica/CNH_aberta/imagem_exemplo3.jpg",
+        csv_arquivo="csv/cnh_nova_dados_aberta.csv",
+        json_arquivo="json/posicoes_cnh_fisica_aberta.json",
+        pasta_saida="imagens/cnh_fisica/CNH_aberta",
+        tipo_cnh="fisica"
     )
 
 
