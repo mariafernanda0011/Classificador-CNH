@@ -147,17 +147,17 @@ def main():
 
             resultados.append(resultado)
 
-    # Converte para DataFrame
-    df = pd.DataFrame(resultados)
+        # Converte para DataFrame
+        df = pd.DataFrame(resultados)
 
-    # Gera bag-of-words com a SUA função
-    print("Gerando features Bag of Words...")
-    df = gerar_features_bag_palavras(df, obter_bag_palavras())
-    print("Bag of Words OK")
-    
-    print(" ===== OK, salvando dados...")
-    nome_csv = f"features_{categoria}_{subpasta}.csv"
-    gerar_csv(df.to_dict(orient="records"), nome_csv)
+        # Gera bag-of-words com a SUA função
+        print("Gerando features Bag of Words...")
+        df = gerar_features_bag_palavras(df, obter_bag_palavras())
+        print("Bag of Words OK")
+        
+        print(" ===== OK, salvando dados...")
+        nome_csv = f"features_{categoria}_{subpasta}.csv"
+        gerar_csv(df.to_dict(orient="records"), nome_csv)
 
 if __name__ == "__main__":
     main()
